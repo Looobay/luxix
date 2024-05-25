@@ -59,6 +59,7 @@ clean:
 	rm -rf *.bin *.dis *.o os-image.bin *.elf
 	rm -rf kernel/*.o boot/*.bin drivers/*.o boot/*.o
 	rm -rf out/*bin out/*o
+	rm -rf debug/*elf
 
 reset:
 	make clean
