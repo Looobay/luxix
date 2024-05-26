@@ -56,6 +56,7 @@ void kPrint(const char *string, int color){
             vga[offset_from_vga+1] = color;
             offset_from_vga = (position+1+i) * 2;
             i = i + 1;
+            set_cursor_offset(offset_from_vga);
         }
     }
 }
