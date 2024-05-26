@@ -3,3 +3,4 @@ void kPrint(char *string, int color);
 int stringLength(char *string);
 void kJump();
 void kJumpAt(int l);
+void kTab();

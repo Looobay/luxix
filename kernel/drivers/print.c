@@ -4,13 +4,15 @@
 int line;
 // Jump one line
 void kJump(){
-    line++;
-    set_cursor_offset(get_offset(0,line));
+    set_cursor_offset(get_offset(0,line+1));
 }
-
 // Jump to the line specified
 void kJumpAt(int l){
     set_cursor_offset(get_offset(0,l));
+}
+int tab;
+void kTab(){
+    set_cursor_offset(get_offset(tab, line));
 }
 
 // Just a basic character printing function
@@ -43,28 +45,18 @@ void kPrintC(const char *character, int color){
     */
 }
 
-
 void kPrint(const char *string, int color){
-    // On demande au VGA la position du curseur / 14 = high / 15 = low
-    port_byte_out(0x3d4, 14);
-
-    int position = port_byte_in(0x3d5); // la position équivaut donc à la valeure de l'octet 0x3d5 (le registre de donnée du VGA)
-    position = position << 8;
-
-    port_byte_out(0x3d4,15);
-    position += port_byte_in(0x3d5); // on aditionne la position avec la valeure de l'octet 0x3d5
-
-    int offset_from_vga = position * 2; // cela permet d'avoir deux paramètres le caractère et la couleur
+    int offset_from_vga = get_offset(tab, line); // cela permet d'avoir deux paramètres le caractère et la couleur
 
     int i;
     char* vga = 0xb8000;
     if (stringLength(string) > 1){
-        while(string[i] != 0){
+        while(string[i] != '\0'){
             vga[offset_from_vga] = string[i];
             vga[offset_from_vga+1] = color;
-            offset_from_vga = (position+1+i) * 2;
-            set_cursor_offset + i;
-            i = i + 1;
+            offset_from_vga = get_offset(tab+1+i, line);
+            set_cursor_offset(offset_from_vga);
+            i++;
         }
     }
     else{
