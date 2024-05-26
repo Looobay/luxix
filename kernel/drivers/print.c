@@ -4,11 +4,8 @@
 int line;
 // Jump one line
 void kJump(){
-    set_cursor_offset(get_offset(0,line+1));
-}
-// Jump to the line specified
-void kJumpAt(int l){
-    set_cursor_offset(get_offset(0,l));
+    set_cursor_offset(get_offset(0,line++));
+    line++;
 }
 int tab;
 void kTab(){
