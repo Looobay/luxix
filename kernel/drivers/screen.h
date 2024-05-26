@@ -10,3 +10,4 @@
 void clear_screen();
 void set_cursor_offset(int offset);
 int get_cursor_offset();
+int get_offset(int col, int row);

@@ -60,6 +60,7 @@
     "*.asm": "nasm",
     "ports.h": "c",
     "kprintc.h": "c",
-    "screen.h": "c"
+    "screen.h": "c",
+    "print.h": "c"
   }
 }

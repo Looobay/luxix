@@ -1,6 +1,12 @@
 #include "ports.h"
 #include "screen.h"
 
+int line;
+void kJump(){
+    int newLine = line + 1;
+    set_cursor_offset(get_offset(0,newLine));
+}
+
 // Just a basic character printing function
 
 /*
@@ -54,7 +60,7 @@ void kPrint(const char *string, int color){
         while(string[i] != 0){
             vga[offset_from_vga] = string[i];
             vga[offset_from_vga+1] = color;
-            offset_from_vga = (position+1+i) * 2;
+            offset_from_vga = (position+1+i) * 2; // Le +1 = curseur après la dernière lettre
             i = i + 1;
             set_cursor_offset(offset_from_vga);
         }
