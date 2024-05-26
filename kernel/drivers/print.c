@@ -43,33 +43,32 @@ void kPrintC(const char *character, int color){
     */
 }
 
-// Une fonction ultra artisanale qui permet d'afficher des chaînes de caractères.
-// An ultra-artisanal function that allows you to display character strings.
+
 void kPrint(const char *string, int color){
+    // On demande au VGA la position du curseur / 14 = high / 15 = low
     port_byte_out(0x3d4, 14);
 
-    int position = port_byte_in(0x3d5);
+    int position = port_byte_in(0x3d5); // la position équivaut donc à la valeure de l'octet 0x3d5 (le registre de donnée du VGA)
     position = position << 8;
 
     port_byte_out(0x3d4,15);
-    position += port_byte_in(0x3d5);
+    position += port_byte_in(0x3d5); // on aditionne la position avec la valeure de l'octet 0x3d5
 
-    int offset_from_vga = position * 2;
+    int offset_from_vga = position * 2; // cela permet d'avoir deux paramètres le caractère et la couleur
 
-    int i = 0;
-    char *vga = 0xb8000;
-
-    if(stringLength(string) == 1){
-        kPrintC(string, color);
-    }
-    else{
-        while(string[i] != '\0'){
+    int i;
+    char* vga = 0xb8000;
+    if (stringLength(string) > 1){
+        while(string[i] != 0){
             vga[offset_from_vga] = string[i];
             vga[offset_from_vga+1] = color;
-            offset_from_vga = (position+1+i) * 2; // Le +1 = curseur après la dernière lettre
-            i++;
-            set_cursor_offset(offset_from_vga);
+            offset_from_vga = (position+1+i) * 2;
+            set_cursor_offset + i;
+            i = i + 1;
         }
+    }
+    else{
+        kPrintC(string, color);
     }
 }
 

@@ -4,6 +4,6 @@
 
 void main() {
     clear_screen();
-    kPrint("Luxix is online!", 0x0f);
+    kPrint("Luxix 1.0 x86_64", 0x0f);
     kJump();
 }
