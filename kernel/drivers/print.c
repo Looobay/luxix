@@ -2,9 +2,15 @@
 #include "screen.h"
 
 int line;
+// Jump one line
 void kJump(){
-    int newLine = line + 1;
-    set_cursor_offset(get_offset(0,newLine));
+    line++;
+    set_cursor_offset(get_offset(0,line));
+}
+
+// Jump to the line specified
+void kJumpAt(int l){
+    set_cursor_offset(get_offset(0,l));
 }
 
 // Just a basic character printing function
@@ -57,11 +63,11 @@ void kPrint(const char *string, int color){
         kPrintC(string, color);
     }
     else{
-        while(string[i] != 0){
+        while(string[i] != '\0'){
             vga[offset_from_vga] = string[i];
             vga[offset_from_vga+1] = color;
             offset_from_vga = (position+1+i) * 2; // Le +1 = curseur après la dernière lettre
-            i = i + 1;
+            i++;
             set_cursor_offset(offset_from_vga);
         }
     }
