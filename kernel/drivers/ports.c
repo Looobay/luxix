@@ -1,3 +1,5 @@
+// Permet de faire des appels Assembleur
+
 /*
  * Lis un octet sur le port spécifié et renvoie le resultat
  * Read a byte from the specified port and return the result

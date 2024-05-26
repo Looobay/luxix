@@ -1,8 +1,8 @@
 # $@ = target file
 # $< = first dependency
 # $^ = all dependencies
-C_SOURCES = $(wildcard kernel/*.c drivers/*.c)
-HEADERS = $(wildcard kernel/*.h drivers/*.h)
+C_SOURCES = $(wildcard kernel/*.c kernel/drivers/*.c modules/*.c)
+HEADERS = $(wildcard kernel/*.h kernel/drivers/*.h)
 # Nice syntax for file extension replacement
 OBJ = ${C_SOURCES:.c=.o}
 
@@ -57,9 +57,7 @@ out/kernel.o : kernel/kernel.c
 
 clean:
 	rm -rf *.bin *.dis *.o os-image.bin *.elf
-	rm -rf kernel/*.o boot/*.bin drivers/*.o boot/*.o
-	rm -rf out/*bin out/*o
-	rm -rf debug/*elf
+	rm -rf kernel/*.o boot/*.bin kernel/drivers/*.o boot/*.o debug/*elf out/*bin out/*o modules/*o
 
 reset:
 	make clean

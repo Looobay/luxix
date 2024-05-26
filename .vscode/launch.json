@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/luc/dev/luxix/kernel",
-      "program": "/home/luc/dev/luxix/kernel/build/Debug/outDebug",
+      "cwd": "/home/luc/dev/luxix/kernel/drivers",
+      "program": "/home/luc/dev/luxix/kernel/drivers/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
