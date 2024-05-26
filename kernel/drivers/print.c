@@ -1,34 +1,39 @@
 #include "ports.h"
 #include "screen.h"
 
-int line;
+int line = 0;
+int tab = 0;
 // Jump one line
 void kJump(){
-    set_cursor_offset(get_offset(0,line++));
     line++;
+    set_cursor_offset(get_offset(0,line));
 }
-int tab;
+// Jump a specified number of line
+void kJumpAt(int num){
+    while(num != 0){
+        num = num - 1;
+        kJump();
+    }
+}
+// Move the cursor on the right.
 void kTab(){
+    tab++;
     set_cursor_offset(get_offset(tab, line));
 }
 
-// Just a basic character printing function
+void kTabAt(int num){
+    while(num != 0){
+        num = num - 1;
+        kTab();
+    }
+}
 
 /*
 * Ecrit sur l'écran un caractère à la zone ou se situe le curseur.
 * Writes a character on the screen in the area where the cursor is located.
 */
 void kPrintC(const char *character, int color){
-    // On demande au VGA la position du curseur / 14 = high / 15 = low
-    port_byte_out(0x3d4, 14);
-
-    int position = port_byte_in(0x3d5); // la position équivaut donc à la valeure de l'octet 0x3d5 (le registre de donnée du VGA)
-    position = position << 8;
-
-    port_byte_out(0x3d4,15);
-    position += port_byte_in(0x3d5); // on aditionne la position avec la valeure de l'octet 0x3d5
-
-    int offset_from_vga = position * 2; // cela permet d'avoir deux paramètres le caractère et la couleur
+    int offset_from_vga = get_offset(tab,line);
 
     char *vga = 0xb8000;
     vga[offset_from_vga] = *character;
@@ -42,27 +47,26 @@ void kPrintC(const char *character, int color){
     */
 }
 
+// Print string via BIOS
 void kPrint(const char *string, int color){
-    int offset_from_vga = get_offset(tab, line); // cela permet d'avoir deux paramètres le caractère et la couleur
-
-    int i;
+    int offset_from_vga = get_offset(tab, line);
+    int i = 0; // CONNARD DE i (il cassait la fonction avant que le définisse à 0)
     char* vga = 0xb8000;
     if (stringLength(string) > 1){
         while(string[i] != '\0'){
             vga[offset_from_vga] = string[i];
             vga[offset_from_vga+1] = color;
-            offset_from_vga = get_offset(tab+1+i, line);
-            set_cursor_offset(offset_from_vga);
+            set_cursor_offset(offset_from_vga = get_offset(tab+1+i, line));
             i++;
         }
     }
-    else{
+    else{ //if the string as a length of 1
         kPrintC(string, color);
     }
 }
 
 // Fonction pour calculer la longueur d'une chaîne de caractères.
-// Random function inspired by the C standard library.
+// String length function inspired by the C standard library.
 int stringLength(const char *string) {
     int i = 0;
 
