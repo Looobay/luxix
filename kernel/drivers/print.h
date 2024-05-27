@@ -5,4 +5,4 @@ void kJump();
 void kJumpAt(int num);
 void kTab();
 void kTabAt(int num);
-void resetTab();
+void tabZ();

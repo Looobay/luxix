@@ -3,11 +3,14 @@
 
 int line = 0;
 int tab = 0;
+
 // Jump one line
 void kJump(){
     line++;
-    set_cursor_offset(get_offset(tab,line));
+    tab=0;
+    set_cursor_offset(get_offset(0,line));
 }
+
 // Jump a specified number of line
 void kJumpAt(int num){
     while(num != 0){
@@ -15,6 +18,7 @@ void kJumpAt(int num){
         kJump();
     }
 }
+
 // Move the cursor on the right.
 void kTab(){
     tab++;
@@ -27,6 +31,7 @@ void kTabAt(int num){
         kTab();
     }
 }
+
 
 /*
 * Ecrit sur l'écran un caractère à la zone ou se situe le curseur.
@@ -64,7 +69,7 @@ void kPrint(const char *string, int color) { // Thanks a lot to ChatGPT that hel
         }
         i++;
     }
-
+    
     // Mise à jour de la position du curseur après avoir terminé d'imprimer la chaîne
     set_cursor_offset(get_offset(tab, line));
 }
