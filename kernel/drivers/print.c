@@ -6,7 +6,7 @@ int tab = 0;
 // Jump one line
 void kJump(){
     line++;
-    set_cursor_offset(get_offset(0,line));
+    set_cursor_offset(get_offset(tab,line));
 }
 // Jump a specified number of line
 void kJumpAt(int num){
@@ -48,21 +48,25 @@ void kPrintC(const char *character, int color){
 }
 
 // Print string via BIOS
-void kPrint(const char *string, int color){
-    int offset_from_vga = get_offset(tab, line);
+void kPrint(const char *string, int color) { // Thanks a lot to ChatGPT that helped me to make this function working !
     int i = 0; // CONNARD DE i (il cassait la fonction avant que le définisse à 0)
-    char* vga = 0xb8000;
-    if (stringLength(string) > 1){
-        while(string[i] != '\0'){
+    char *vga = 0xb8000;
+
+    while (string[i] != '\0') {
+        if (string[i] == '\n') {
+            kJump();
+            tab = 0;
+        } else {
+            int offset_from_vga = get_offset(tab, line);
             vga[offset_from_vga] = string[i];
-            vga[offset_from_vga+1] = color;
-            set_cursor_offset(offset_from_vga = get_offset(tab+1+i, line));
-            i++;
+            vga[offset_from_vga + 1] = color;
+            tab++;
         }
+        i++;
     }
-    else{ //if the string as a length of 1
-        kPrintC(string, color);
-    }
+
+    // Mise à jour de la position du curseur après avoir terminé d'imprimer la chaîne
+    set_cursor_offset(get_offset(tab, line));
 }
 
 // Fonction pour calculer la longueur d'une chaîne de caractères.
